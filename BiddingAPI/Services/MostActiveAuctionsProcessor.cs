@@ -1,17 +1,4 @@
-using System;
-using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Reactive.PlatformServices;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Options;
-using BiddingAPI.Processors;
 using BiddingAPI.Services;
 using BiddingAPI.Models;
 
@@ -35,13 +22,13 @@ public class MostActiveAuctionsProcessor : IProcessor
         setupRx();
 
         // Log the number of bids in the last time window of X seconds:
-        // numberOfBidsAcrossAllActionsInLastNumberOfSeconds(10);
+           numberOfBidsAcrossAllActionsInLastNumberOfSeconds(10);
 
         // Log the number of bids in the last time window of X seconds PER AUCTION:
         // numberOfBidsAcrossAllActionsInLastNumberOfSecondsPerAuction(10);
 
         // Log the most active auction in last time window of X seconds:
-        mostActiveActionInLastNumberOfSeconds(10);
+        // mostActiveActionInLastNumberOfSeconds(10);
     }
 
     private void setupRx(){
@@ -84,23 +71,23 @@ public class MostActiveAuctionsProcessor : IProcessor
 
             // Here's the actual RX streaming processing code that counts number of bids per auction in last 30 seconds:
             bidsStream!.Window(TimeSpan.FromSeconds(windowLengthInSeconds)) // create non-overlapping tumbling window of bidding events
-                    .Select(windowedBidStream => windowedBidStream       // every item in this observable contains the bids in a time window
-                                                    .GroupBy(bid => bid.AuctionId)       // group by auction within that time window
-                                                    .Select(auctionBidStreamInWindow =>  // for every auction group/observable, count the bids
-                                                        auctionBidStreamInWindow
-                                                        .Count()         // count the bid (gives observable of int)
-                                                        .Select(count => new AuctionBidCount {
-                                                            Auction = auctionBidStreamInWindow.Key,
-                                                            BidCount = count
-                                                        })
-                                                    )
-                                                    .Merge()
-                                                    .Max<AuctionBidCount>(BidCountComparer)
-                    )
-                    .Merge()
-                    .Where(a => a != null)
-                    .Do(auction => _logger.LogInformation($"In the last {windowLengthInSeconds} secs, auction {auction.Auction} is most popular with {auction.BidCount} bids"))
-                    .Subscribe();
+                        .Select(windowedBidStream => windowedBidStream       // every item in this observable contains the bids in a time window
+                                                        .GroupBy(bid => bid.AuctionId)       // group by auction within that time window
+                                                        .Select(auctionBidStreamInWindow =>  // for every auction group/observable, count the bids
+                                                            auctionBidStreamInWindow
+                                                            .Count()         // count the bid (gives observable of int)
+                                                            .Select(count => new AuctionBidCount {
+                                                                Auction = auctionBidStreamInWindow.Key,
+                                                                BidCount = count
+                                                            })
+                                                        )
+                                                        .Merge()
+                                                        .Max<AuctionBidCount>(BidCountComparer)
+                        )
+                        .Merge()
+                        .Where(a => a != null)
+                        .Do(auction => _logger.LogInformation($"In the last {windowLengthInSeconds} secs, auction {auction.Auction} is most popular with {auction.BidCount} bids"))
+                        .Subscribe();
     }
 
     private class AuctionBidCount{

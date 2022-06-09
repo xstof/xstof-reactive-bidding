@@ -19,8 +19,10 @@ builder.Services.AddSingleton<IBidsHandler>(svc => svc.GetRequiredService<BidsPr
 builder.Services.AddSingleton<ProcessorService>();
 
 // Configure processing services:
+// Note: the below 3 processors are various examples/scenarios of how bids can be processed; you may comment out what you don't need or want to test
 // builder.Services.AddSingleton<IProcessor, TestProcessor>();
-builder.Services.AddSingleton<IProcessor, MostActiveAuctionsProcessor>();
+// builder.Services.AddSingleton<IProcessor, MostActiveAuctionsProcessor>();
+   builder.Services.AddSingleton<IProcessor, ReduceToHighestBidPerLotProcessor>();
 
 builder.Host.ConfigureLogging(logging => {
     logging.ClearProviders();
