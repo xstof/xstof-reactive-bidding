@@ -1,0 +1,46 @@
+@host = localhost:5039
+@contentType = application/json
+
+### test placing a bid on the Bidding API:
+POST http://{{host}}/bids HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "AuctionId": "auction-01",
+    "LotId": "lot-05",
+    "UserId": "my-user-name",
+    "BiddingPrice": 10.32
+}
+
+### test placing a higher bid on the Bidding API:
+POST http://{{host}}/bids HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "AuctionId": "auction-01",
+    "LotId": "lot-05",
+    "UserId": "another-user-name",
+    "BiddingPrice": 11.32
+}
+
+### test placing an even higher bid on the Bidding API:
+POST http://{{host}}/bids HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "AuctionId": "auction-02",
+    "LotId": "lot-05",
+    "UserId": "third-user-name",
+    "BiddingPrice": 13.87
+}
+
+### test placing an even higher bid on the Bidding API:
+POST http://{{host}}/bids HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "AuctionId": "auction-03",
+    "LotId": "lot-05",
+    "UserId": "third-user-name",
+    "BiddingPrice": 14.07
+}
