@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../app/hooks";
 
-import { Table } from 'react-bootstrap';
+import { Table, Button, ButtonGroup } from 'react-bootstrap';
 
 export function Lots(){
 
@@ -23,7 +23,13 @@ export function Lots(){
                         <th>{lot.id}</th>
                         <th>{lot.name}</th>
                         <th>{lot.price}</th>
-                        <th>TODO</th>
+                        <th>
+                        <ButtonGroup size="sm" className="mb-2">
+                            <Button>Bid {lot.price + 1}$</Button>
+                            <Button>Bid {lot.price + 2}$</Button>
+                            <Button>Bid {lot.price + 5}$</Button>
+                        </ButtonGroup>
+                        </th>
                     </tr>)
                 })}
             </tbody>
