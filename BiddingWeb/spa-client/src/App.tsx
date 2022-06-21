@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Header } from './components/Header';
 import { Counter } from './features/counter/Counter';
 import { Auctions } from './features/auctions/Auctions';
+import { Lots } from './features/auctions/Lots';
 
 import './App.css';
 
@@ -17,7 +18,9 @@ function App() {
           <Col xs={4}>
             <Auctions />
           </Col>
-          <Col xs={8}>test 2</Col>
+          <Col xs={8}>
+            <Lots/>
+          </Col>
         </Row>
       </Container>
 
