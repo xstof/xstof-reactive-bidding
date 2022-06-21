@@ -22,10 +22,10 @@ public class MostActiveAuctionsProcessor : IProcessor
         setupRx();
 
         // Log the number of bids in the last time window of X seconds:
-           numberOfBidsAcrossAllActionsInLastNumberOfSeconds(10);
+           // numberOfBidsAcrossAllActionsInLastNumberOfSeconds(10);
 
         // Log the number of bids in the last time window of X seconds PER AUCTION:
-        // numberOfBidsAcrossAllActionsInLastNumberOfSecondsPerAuction(10);
+           numberOfBidsAcrossAllActionsInLastNumberOfSecondsPerAuction(10);
 
         // Log the most active auction in last time window of X seconds:
         // mostActiveActionInLastNumberOfSeconds(10);
