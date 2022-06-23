@@ -27,7 +27,7 @@ public class AuctionsController : ControllerBase
         return auctionTestData;
     }
 
-    [HttpGet("{auctionId}")]
+    [HttpGet("{auctionId}", Name = "Get Auction")]
     public async Task<ActionResult<Auction>> GetSingle(string auctionId)
     {
         var auction = auctionTestData.SingleOrDefault(a => a.Id == auctionId);
@@ -35,7 +35,7 @@ public class AuctionsController : ControllerBase
         return auction;
     }
 
-    [HttpGet("{auctionId}/lots")]
+    [HttpGet("{auctionId}/lots", Name = "Get Auction Lots")]
     public async Task<ActionResult<IEnumerable<Lot>>> GetLots(string auctionId)
     {
         switch(auctionId){
