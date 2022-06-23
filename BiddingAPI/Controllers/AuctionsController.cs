@@ -45,13 +45,40 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet("{auctionId}/lots")]
-    public async Task<IEnumerable<Lot>> GetLots(string auctionId)
+    public async Task<ActionResult<IEnumerable<Lot>>> GetLots(string auctionId)
     {
-        return new Lot[]{
-            new Lot(Name: "Fruits", Id: "1", Price: 1.3),
-            new Lot(Name: "Antique", Id: "2", Price: 1.8),
-            new Lot(Name: "Electronics", Id: "3", Price: 1.1),
-            new Lot(Name: "Paintings", Id: "4", Price: 1.5)
+        switch(auctionId){
+            case "1":
+                return new Lot[]{
+                    new Lot(Name: "Apples", Id: "1", Price: 1.21),
+                    new Lot(Name: "Oranges", Id: "2", Price: 4.75),
+                    new Lot(Name: "Bananas", Id: "3", Price: 5.19),
+                };
+            case "2":
+                return new Lot[]{
+                    new Lot(Name: "Closet", Id: "1", Price: 2.24),
+                    new Lot(Name: "Mirror", Id: "2", Price: 5.74),
+                    new Lot(Name: "Chair", Id: "3", Price: 9.29),
+                    new Lot(Name: "Table", Id: "4", Price: 6.69),
+                };
+            case "3":
+                return new Lot[]{
+                    new Lot(Name: "Radio", Id: "1", Price: 2.13),
+                    new Lot(Name: "TV", Id: "2", Price: 5.74),
+                    new Lot(Name: "Smartphone", Id: "3", Price: 9.29),
+                    new Lot(Name: "Speakers", Id: "4", Price: 1.69),
+                    new Lot(Name: "Smartwatch", Id: "5", Price: 2.29),
+                    new Lot(Name: "Toaster", Id: "6", Price: 9.44),
+                };
+            case "4":
+                return new Lot[]{
+                    new Lot(Name: "Mona Lisa", Id: "1", Price: 50.78),
+                    new Lot(Name: "The Scream", Id: "2", Price: 78.81),
+                    new Lot(Name: "The Starry Night", Id: "3", Price: 42.21),
+                    new Lot(Name: "The Kiss", Id: "4", Price: 93.99),
+                };
+            default:
+                return NotFound();
         };
     }
 }
