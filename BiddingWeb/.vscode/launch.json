@@ -26,11 +26,18 @@
                 "/Views": "${workspaceFolder}/Views"
             }
         },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
+        {   // see here for info on debugging react apps: https://medium.com/@auchenberg/live-edit-and-debug-your-react-apps-directly-from-vs-code-without-leaving-the-editor-3da489ed905f
+            "name": "Chrome",
+            "type": "chrome",
+            "request": "launch",
+            "url": "https://localhost:5001",
+            "webRoot": "${workspaceRoot}/src"
         },
+        // {
+        //     "name": ".NET Core Attach",
+        //     "type": "coreclr",
+        //     "request": "attach"
+        // },
         {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
@@ -61,7 +68,8 @@
             "name": "Web + API",
             "configurations": [
                 "BiddingAPI",
-                "BiddingWeb"
+                "BiddingWeb",
+                "Chrome"
             ]
         }
     ]

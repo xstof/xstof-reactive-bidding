@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { Auctions as auctionClient } from "../../biddingclient/Auctions";
+import { start } from "repl";
 
 export interface Lot {
     name: string,
@@ -15,11 +17,13 @@ export interface Auction {
 
 export interface AuctionsState {
     selectedAuctionId: string | null,
+    status: 'idle' | 'loading' | 'failed' | 'succeeded',
     auctions: Auction[]
 }
   
 const initialState: AuctionsState = {
     selectedAuctionId: null,
+    status: 'idle',
     auctions: [
         {
             name: 'Art Auction',
@@ -75,16 +79,36 @@ const initialState: AuctionsState = {
     ]
 };
 
+export const fetchAuctions = createAsyncThunk('auctions/fetchAuctions', async () => {
+
+    // use swagger-generated typescript client, generated in /src/biddingclient/
+    const client = new auctionClient({
+        baseUrl: 'https://localhost:7294' // TODO GET THIS FROM CONFIG
+    });
+
+    const response = await client.getAuctions();
+    return response.data.map(auction => {
+        return {
+            name: auction.name,
+            id: auction.id,
+            category: auction.category,
+            lots: <Lot[]>[]};
+    });
+});
+
 export const auctionsSlice = createSlice({
     'name': 'auctions',
     initialState, 
     reducers: {
-        selectAuction: (state, action: PayloadAction<string>) => {
+        auctionSelected: (state, action: PayloadAction<string>) => {
             state.selectedAuctionId = action.payload;
+        },
+        auctionAdded: (state, action: PayloadAction<Auction>) => {
+            state.auctions.push(action.payload);
         }
     }
 });
 
-export const { selectAuction } = auctionsSlice.actions;
+export const { auctionSelected, auctionAdded } = auctionsSlice.actions;
 
 export default auctionsSlice.reducer;

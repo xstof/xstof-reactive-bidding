@@ -1,12 +1,15 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAuction } from '../auctions/auctionsSlice';
+import { auctionSelected, fetchAuctions } from '../auctions/auctionsSlice';
 
 import { Card, Badge } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 export function Auctions(){
 
     const auctions = useAppSelector(state => state.auctions);    
+    const status = useAppSelector(state => state.auctions.status);
+
     const dispatch = useAppDispatch();
 
     const isSelected = (auctionId:string) => {
@@ -14,9 +17,15 @@ export function Auctions(){
         return false;
     };
 
+    useEffect(() => {
+        if(status === 'idle'){
+            dispatch(fetchAuctions());
+        }
+    }, [dispatch, status]);
+
     const auctionElements = auctions.auctions.map(auction => 
         <Card className='m-2' 
-              onClick={() => dispatch(selectAuction(auction.id))}
+              onClick={() => dispatch(auctionSelected(auction.id))}
               bg={isSelected(auction.id) ? 'secondary' : 'light'}
               text={isSelected(auction.id) ? 'white' : 'dark'}>
             <Card.Header>Auction - {auction.lots.length} Lots]</Card.Header>
