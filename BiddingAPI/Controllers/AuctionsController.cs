@@ -10,22 +10,11 @@ namespace BiddingAPI.Controllers;
 public class AuctionsController : ControllerBase
 {
     private readonly ILogger<AuctionsController> _logger;
-    private dynamic testData = new {
-        Auctions = new[]{
-            new {Name = "Fruits", Id = "1", Category = "Fruits and Vegetables", Lots = new []{
-                new { Name = "Apples", Id = "1", Price = 1.1 },
-                new { Name = "Bananas", Id = "2", Price = 1.5 },
-                new { Name = "Oranges", Id = "3", Price = 2.3 },
-                new { Name = "Grapefruits", Id = "4", Price = 5.6 }
-            }},
-            new {Name = "Antique", Id = "2", Category = "Antique", Lots = new []{
-                new { Name = "Table", Id = "1", Price = 2.1 },
-                new { Name = "Chair", Id = "2", Price = 2.4 },
-                new { Name = "Mirror", Id = "3", Price = 3.1 },
-                new { Name = "Closet", Id = "4", Price = 6.6 }
-            }}
-        }
-    };
+    private Auction[] auctionTestData = new Auction[]{
+            new Auction(Name: "Fruits", Id: "1", Category: "Fruits and Vegetables"),
+            new Auction(Name: "Antique", Id: "2", Category: "Antique"),
+            new Auction(Name: "Electronics", Id: "3", Category: "Electronics"),
+            new Auction(Name: "Paintings", Id: "4", Category: "Arts and Crafts")};
 
     public AuctionsController(ILogger<AuctionsController> logger, IBidsHandler bidsHandler)
     {
@@ -35,13 +24,15 @@ public class AuctionsController : ControllerBase
     [HttpGet(Name = "Get Auctions")]
     public async Task<IEnumerable<Auction>> Get()
     {
-        
-        return new Auction[]{
-            new Auction(Name: "Fruits", Id: "1", Category: "Fruits and Vegetables"),
-            new Auction(Name: "Antique", Id: "2", Category: "Antique"),
-            new Auction(Name: "Electronics", Id: "3", Category: "Electronics"),
-            new Auction(Name: "Paintings", Id: "4", Category: "Arts and Crafts")
-        };
+        return auctionTestData;
+    }
+
+    [HttpGet("{auctionId}")]
+    public async Task<ActionResult<Auction>> GetSingle(string auctionId)
+    {
+        var auction = auctionTestData.SingleOrDefault(a => a.Id == auctionId);
+        if(auction == null) return NotFound();
+        return auction;
     }
 
     [HttpGet("{auctionId}/lots")]
