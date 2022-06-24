@@ -24,7 +24,8 @@ export function Auctions(){
     }, [dispatch, status]);
 
     const auctionElements = auctions.auctions.map(auction => 
-        <Card className='m-2' 
+        <Card className='m-2'
+              key={auction.id}
               onClick={() => dispatch(auctionSelected(auction.id))}
               bg={isSelected(auction.id) ? 'secondary' : 'light'}
               text={isSelected(auction.id) ? 'white' : 'dark'}>

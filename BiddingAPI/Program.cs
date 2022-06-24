@@ -10,6 +10,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configure CORS so that web UI can call this API: (don't try this at home)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 // Configure bids provider (provides ability to add bid to stream of bids and to consume stream of bids):
 builder.Services.AddSingleton<BidsProvider>();
 builder.Services.AddSingleton<IBidsProvider>(svc => svc.GetRequiredService<BidsProvider>());
@@ -30,6 +42,9 @@ builder.Host.ConfigureLogging(logging => {
 });
 
 var app = builder.Build();
+
+// Use CORS:
+app.UseCors("AllowAll");
 
 // Use bidding processors: IProcessor services that each process the stream of incoming bids in parallel:
 app.UseProcessors();

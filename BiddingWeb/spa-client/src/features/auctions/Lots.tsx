@@ -19,7 +19,7 @@ export function Lots(){
             </thead>
             <tbody>
                 {selectedAuction?.lots.map(lot => {
-                    return (<tr>
+                    return (<tr key={lot.id}>
                         <th>{lot.id}</th>
                         <th>{lot.name}</th>
                         <th>{lot.price}</th>
