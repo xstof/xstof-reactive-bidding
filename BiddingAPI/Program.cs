@@ -50,13 +50,14 @@ app.UseCors("AllowAll");
 app.UseProcessors();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
-app.UseHttpsRedirection();
+// disable HTTPS redirection as TLS is terminated earlier by a proxy
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
