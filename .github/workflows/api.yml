@@ -26,6 +26,7 @@ env:
   TENANT_ID: 72f988bf-86f1-41af-91ab-2d7cd011db47
   SUBSCRIPTION_ID: 651dc44c-5d8e-48da-8cd3-cd79224ac290
   RG: xstof-bidding
+  ACR_NAME: ccacr
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -50,7 +51,9 @@ jobs:
         run: |
           az account show
           pushd BiddingAPI
-          ./build-container-image.sh
+          ./build-container-image.sh -v ${{ github.sha }}
+          az acr login --name ${{ ENV.ACR_NAME }}
+          docker push ccacr.azurecr.io/bidding-api:${{ github.sha }}
 
       - name: 'Publish container to container apps'
         run: |
@@ -59,5 +62,5 @@ jobs:
             --template-file container-app-container.bicep \
             --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
                          containerAppName='xstof-bidding-dev-api' \
-                         containerImage='ccacr.azurecr.io/bidding-api:latest' \
+                         containerImage='ccacr.azurecr.io/bidding-api:${{ github.sha }}' \
                          targetPort=5000
