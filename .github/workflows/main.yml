@@ -87,7 +87,7 @@ jobs:
       
   build-image-web:
     runs-on: ubuntu-latest
-    needs: build-env
+    needs: [build-env, check-folder-changes]
     if: needs.check-folder-changes.outputs.web_changed == 'True'
     steps:
     - name: 'Build container image for Web project'
