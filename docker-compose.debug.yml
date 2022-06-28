@@ -3,11 +3,11 @@
 version: '3.4'
 
 services:
-  biddingapi:
-    image: biddingapi
+  biddingweb:
+    image: biddingweb
     build:
       context: .
-      dockerfile: BiddingAPI/Dockerfile
+      dockerfile: BiddingWeb/Dockerfile
     ports:
       - 5000:5000
     environment:

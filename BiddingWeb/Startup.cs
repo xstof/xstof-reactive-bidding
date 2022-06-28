@@ -44,7 +44,9 @@ namespace BiddingWeb
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // disable HTTPS redirection as TLS termination will be done by proxy
+            // app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

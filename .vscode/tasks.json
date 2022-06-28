@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "xstofreactivebidding:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/BiddingAPI/Dockerfile",
+                "dockerfile": "${workspaceFolder}/BiddingWeb/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/BiddingAPI/BiddingAPI.csproj"
+                "appProject": "${workspaceFolder}/BiddingWeb/BiddingWeb.csproj"
             }
         },
         {
@@ -62,12 +62,12 @@
             ],
             "dockerBuild": {
                 "tag": "xstofreactivebidding:latest",
-                "dockerfile": "${workspaceFolder}/BiddingAPI/Dockerfile",
+                "dockerfile": "${workspaceFolder}/BiddingWeb/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/BiddingAPI/BiddingAPI.csproj"
+                "appProject": "${workspaceFolder}/BiddingWeb/BiddingWeb.csproj"
             }
         },
         {
@@ -78,7 +78,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/BiddingAPI/BiddingAPI.csproj",
+                "appProject": "${workspaceFolder}/BiddingWeb/BiddingWeb.csproj",
                 "enableDebugging": true
             }
         },
@@ -90,7 +90,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/BiddingAPI/BiddingAPI.csproj"
+                "appProject": "${workspaceFolder}/BiddingWeb/BiddingWeb.csproj"
             }
         }
     ]
