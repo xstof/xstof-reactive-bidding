@@ -1,0 +1,63 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  workflow_call:
+    # inputs:
+    #   username:
+    #     required: true
+    #     type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  CLIENT_ID: 6c432122-ec6f-481b-9a18-5fc2a9d89a68
+  TENANT_ID: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  SUBSCRIPTION_ID: 651dc44c-5d8e-48da-8cd3-cd79224ac290
+  RG: xstof-bidding
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-api:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ ENV.CLIENT_ID }}
+          tenant-id: ${{ ENV.TENANT_ID }}
+          subscription-id: ${{ ENV.SUBSCRIPTION_ID }}
+  
+      - name: 'Build container and publish to Azure Container Registry'
+        run: |
+          az account show
+          pushd BiddingAPI
+          ./build-container-image.sh
+
+      - name: 'Publish container to container apps'
+        run: |
+          az account show
+          az deployment group create --resource-group ${{ ENV.RG }} \
+            --template-file container-app-container.bicep \
+            --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
+                         containerAppName='xstof-bidding-dev-api' \
+                         containerImage='ccacr.azurecr.io/bidding-api:latest' \
+                         targetPort=5000
