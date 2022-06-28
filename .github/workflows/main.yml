@@ -43,10 +43,10 @@ jobs:
       - name: 'Run az commands'
         run: |
           az account show
-          az deployment group create --resource-group  ${{ ENV.RG }} \ 
+          az deployment group create --resource-group ${{ ENV.RG }} \
             --template-file container-app-env.bicep \
-            --parameters containerAppEnvName=xstof-bidding-dev-containerAppsEnv \
-                         containerAppLogAnalyticsName=xstof-bidding-dev-LA
+            --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
+                         containerAppLogAnalyticsName='xstof-bidding-dev-LA'
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
