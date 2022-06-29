@@ -65,7 +65,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
       registries: [
         {
           server: registryName
-          identity: 'system'
+          identity: userIdentity.id
         }
       ]
       ingress: {
