@@ -12,6 +12,9 @@ param location string = resourceGroup().location
 @description('Specifies the ACR container registry from where to pull - full name is expected including azurecr.io suffix.')
 param registryName string
 
+@description('Specifies the name of the Resource Group the ACR container registry is in.')
+param registryResourceGroupName string
+
 @description('Specifies the docker container image to deploy.')
 param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -34,11 +37,10 @@ param minReplicas int = 0
 @maxValue(25)
 param maxReplicas int = 3
 
-// this is the role id for pull rights from ACR:
-var azureContainerRegPullRoleId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 resource containerReg 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
   name: registryName
+  scope: resourceGroup(registryResourceGroupName)
 }
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' existing = {
@@ -103,14 +105,25 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   }
 }
 
-resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: guid(azureContainerRegPullRoleId, containerReg.name, containerAppName)
-  scope: containerReg
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
+module acrPullRoleAssignment './acr-pull-role-assignment.bicep' = {
+  name: 'acr-pull-role-assignment'
+  scope: resourceGroup(registryResourceGroupName)
+  params: {
+    registryName: registryName
     principalId: userIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
+    roleAssignmentName: containerAppName
   }
 }
+
+// TODO: move this into a separate module
+// resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+//   name: guid(azureContainerRegPullRoleId, containerReg.name, containerAppName)
+//   scope: containerReg
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
+//     principalId: userIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
 
 output containerAppFQDN string = containerApp.properties.configuration.ingress.fqdn
