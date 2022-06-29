@@ -63,5 +63,6 @@ jobs:
             --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
                          containerAppName='xstof-bidding-dev-api' \
                          registryName='ccacr.azurecr.io' \
+                         registryResourceGroupName='cccontainers' \
                          containerImage='ccacr.azurecr.io/bidding-api:${{ github.sha }}' \
                          targetPort=5000
