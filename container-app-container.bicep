@@ -45,10 +45,18 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' existing
   name: containerAppEnvName
 }
 
+resource userIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2021-09-30-preview' = {
+  name: 'bidding-api-user-identity'
+  location: location
+}
+
 resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: containerAppName
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userIdentity.id}': {}
+    }
   }
   location: location
   properties: {
@@ -97,7 +105,7 @@ resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-
   scope: containerReg
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
-    principalId: containerApp.identity.principalId
+    principalId: userIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }
 }
