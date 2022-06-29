@@ -52,6 +52,9 @@ resource userIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2021-09-
 
 resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: containerAppName
+  dependsOn: [
+    acrPullRoleAssignment
+  ]
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
@@ -101,7 +104,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
 }
 
 resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: guid(containerApp.name, azureContainerRegPullRoleId, containerReg.name)
+  name: guid(azureContainerRegPullRoleId, containerReg.name, containerAppName)
   scope: containerReg
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
