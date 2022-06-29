@@ -27,7 +27,7 @@ param memorySize string = '1'
 @description('Minimum number of replicas that will be deployed')
 @minValue(0)
 @maxValue(25)
-param minReplicas int = 1
+param minReplicas int = 0
 
 @description('Maximum number of replicas that will be deployed')
 @minValue(0)
