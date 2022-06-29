@@ -34,6 +34,13 @@ param minReplicas int = 1
 @maxValue(25)
 param maxReplicas int = 3
 
+// this is the role id for pull rights from ACR:
+var azureContainerRegPullRoleId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+
+resource containerReg 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
+  name: registryName
+}
+
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' existing = {
   name: containerAppEnvName
 }
@@ -82,6 +89,16 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
         maxReplicas: maxReplicas
       }
     }
+  }
+}
+
+resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(containerApp.name, azureContainerRegPullRoleId, containerReg.name)
+  scope: containerReg
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
+    principalId: containerApp.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
