@@ -9,6 +9,9 @@ param containerAppEnvName string = 'containerapp-env-${uniqueString(resourceGrou
 @description('Specifies the location for all resources.')
 param location string = resourceGroup().location
 
+@description('Specifies the ACR container registry from where to pull - full name is expected including azurecr.io suffix.')
+param registryName string
+
 @description('Specifies the docker container image to deploy.')
 param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
@@ -31,16 +34,25 @@ param minReplicas int = 1
 @maxValue(25)
 param maxReplicas int = 3
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-01-01-preview' existing = {
+resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' existing = {
   name: containerAppEnvName
 }
 
-resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: containerAppName
+  identity: {
+    type: 'SystemAssigned'
+  }
   location: location
   properties: {
     managedEnvironmentId: containerAppEnv.id
     configuration: {
+      registries: [
+        {
+          server: registryName
+          identity: 'system'
+        }
+      ]
       ingress: {
         external: true
         targetPort: targetPort
