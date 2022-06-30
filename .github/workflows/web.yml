@@ -14,7 +14,7 @@ on:
 
   workflow_call:
     # inputs:
-    #   username:
+    #   apiurl:
     #     required: true
     #     type: string
 
