@@ -79,7 +79,7 @@ jobs:
           FQDN=$(az containerapp show -g $RG \
                                -n 'xstof-bidding-dev-api' \
                                -o tsv --query "properties.configuration.ingress.fqdn")
-          echo "FQDN for the API container app is: $FQDN"
+          echo "FQDN for the API container app is: $($FQDN)"
           echo "::set-output name=biddingapiurl::$FQDN"
         env:
           RG: ${{ ENV.RG }}
