@@ -37,6 +37,9 @@ param minReplicas int = 0
 @maxValue(25)
 param maxReplicas int = 3
 
+@description('Suffix to use for the (unique) revision name')
+param revisionSuffix string = 'firstRevision'
+
 var fullRegistryName = '${registryName}.azurecr.io'
 
 resource containerReg 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
@@ -87,7 +90,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
       }
     }
     template: {
-      revisionSuffix: 'firstrevision'
+      revisionSuffix: revisionSuffix
       containers: [
         {
           name: containerAppName

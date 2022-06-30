@@ -65,4 +65,5 @@ jobs:
                          registryName='ccacr' \
                          registryResourceGroupName='cccontainers' \
                          containerImage='ccacr.azurecr.io/bidding-api:${{ github.sha }}' \
-                         targetPort=5000
+                         targetPort=5000 \
+                         revisionSuffix=${{ github.sha }}
