@@ -82,6 +82,12 @@ jobs:
     if: needs.check-folder-changes.outputs.api_changed == 'True'
     uses: ./.github/workflows/api.yml
 
+  output-api-url:
+    runs-on: ubuntu-latest
+    steps:
+      id: output-api-url
+      run: echo ${{ needs.build-image-api-calling-wf.outputs.bidding-api-url }}
+
   build-image-web-calling-wf:
     needs: [build-env, check-folder-changes]
     if: needs.check-folder-changes.outputs.web_changed == 'True'
