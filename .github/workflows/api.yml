@@ -14,9 +14,9 @@ on:
 
   workflow_call:
     outputs:
-      bidding-api-url:
+      biddingapiurl:
         description: "The url of the bidding API deployed in this actions workflow"
-        value: ${{ jobs.build-api.outputs.bidding-api-url }}
+        value: ${{ jobs.build-api.outputs.biddingapiurl }}
     # inputs:
     #   username:
     #     required: true
@@ -79,6 +79,7 @@ jobs:
           FQDN=$(az containerapp show -g $RG \
                                -n 'xstof-bidding-dev-api' \
                                -o tsv --query "properties.configuration.ingress.fqdn")
-          echo "::set-output name=bidding-api-url::$FQDN"
+          echo "FQDN for the API container app is: $FQDN"
+          echo "::set-output name=biddingapiurl::$FQDN"
         env:
           RG: ${{ ENV.RG }}
