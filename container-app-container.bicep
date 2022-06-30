@@ -9,7 +9,7 @@ param containerAppEnvName string = 'containerapp-env-${uniqueString(resourceGrou
 @description('Specifies the location for all resources.')
 param location string = resourceGroup().location
 
-@description('Specifies the ACR container registry from where to pull - full name is expected including azurecr.io suffix.')
+@description('Specifies the ACR container registry from where to pull - leaving off azurecr.io suffix.')
 param registryName string
 
 @description('Specifies the name of the Resource Group the ACR container registry is in.')
@@ -37,6 +37,7 @@ param minReplicas int = 0
 @maxValue(25)
 param maxReplicas int = 3
 
+var fullRegistryName = '${registryName}.azurecr.io'
 
 resource containerReg 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
   name: registryName
@@ -69,7 +70,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
     configuration: {
       registries: [
         {
-          server: registryName
+          server: fullRegistryName
           identity: userIdentity.id
         }
       ]
