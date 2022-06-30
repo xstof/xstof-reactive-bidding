@@ -84,9 +84,11 @@ jobs:
 
   output-api-url:
     runs-on: ubuntu-latest
+    needs: [build-image-api-calling-wf]
+    if: needs.check-folder-changes.outputs.api_changed == 'True'
     steps:
-      id: output-api-url
-      run: echo ${{ needs.build-image-api-calling-wf.outputs.bidding-api-url }}
+      - id: output-api-url
+        run: echo ${{ needs.build-image-api-calling-wf.outputs.bidding-api-url }}
 
   build-image-web-calling-wf:
     needs: [build-env, check-folder-changes]
