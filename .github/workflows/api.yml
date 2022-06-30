@@ -75,6 +75,7 @@ jobs:
 
       - name: 'Fetch FQDN for ingress of container app'
         run: |
+          az config set extension.use_dynamic_install=yes_without_prompt
           FQDN=$(az containerapp show -g $RG \
                                -n 'xstof-bidding-dev-api' \
                                -o tsv --query "properties.configuration.ingress.fqdn")
