@@ -13,6 +13,10 @@ on:
     path: BiddingAPI/**
 
   workflow_call:
+    outputs:
+      bidding-api-url:
+        description: "The url of the bidding API deployed in this actions workflow"
+        value: ${{ jobs.build-api.outputs.bidding-api-url }}
     # inputs:
     #   username:
     #     required: true
@@ -68,3 +72,10 @@ jobs:
                          containerImage='ccacr.azurecr.io/bidding-api:${{ github.sha }}' \
                          targetPort=5000 \
                          revisionSuffix=${{ github.sha }}
+
+      - name: 'Fetch FQDN for ingress of container app'
+        run: |
+          FQDN=${az containerapp show -g ${{ ENV.RG }} \
+                               -n 'xstof-bidding-dev-api' \
+                               -o tsv --query "properties.configuration.ingress.fqdn"}
+          echo "::set-output name=bidding-api-url::$FQDN"
