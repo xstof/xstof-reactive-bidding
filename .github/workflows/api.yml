@@ -75,9 +75,9 @@ jobs:
 
       - name: 'Fetch FQDN for ingress of container app'
         run: |
-          FQDN=${az containerapp show -g $RG \
+          FQDN=${ az containerapp show -g $RG \
                                -n 'xstof-bidding-dev-api' \
-                               -o tsv --query "properties.configuration.ingress.fqdn"}
-          echo "::set-output name=bidding-api-url::$FQDN"
+                               -o tsv --query "properties.configuration.ingress.fqdn" }
+          echo "::set-output name=bidding_api_url::$FQDN"
         env:
           RG: ${{ ENV.RG }}
