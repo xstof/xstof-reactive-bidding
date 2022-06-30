@@ -89,7 +89,7 @@ jobs:
     needs: [build-env, check-folder-changes]
     uses: ./.github/workflows/api.yml
 
-  build-image-api-calling-wf:
+  build-image-web-calling-wf:
     needs: [build-env, check-folder-changes]
     uses: ./.github/workflows/web.yml
       
