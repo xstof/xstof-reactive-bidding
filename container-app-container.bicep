@@ -116,15 +116,4 @@ module acrPullRoleAssignment './acr-pull-role-assignment.bicep' = {
   }
 }
 
-// TODO: move this into a separate module
-// resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-//   name: guid(azureContainerRegPullRoleId, containerReg.name, containerAppName)
-//   scope: containerReg
-//   properties: {
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureContainerRegPullRoleId)
-//     principalId: userIdentity.properties.principalId
-//     principalType: 'ServicePrincipal'
-//   }
-// }
-
 output containerAppFQDN string = containerApp.properties.configuration.ingress.fqdn
