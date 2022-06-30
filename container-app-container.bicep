@@ -41,6 +41,7 @@ param maxReplicas int = 3
 param revisionSuffix string = 'firstRevision'
 
 var fullRegistryName = '${registryName}.azurecr.io'
+var userIdentityName = '${containerAppName}-user-identity'
 
 resource containerReg 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
   name: registryName
@@ -52,7 +53,7 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' existing
 }
 
 resource userIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2021-09-30-preview' = {
-  name: 'bidding-api-user-identity'
+  name: userIdentityName
   location: location
 }
 
