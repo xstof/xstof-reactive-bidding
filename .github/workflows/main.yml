@@ -85,34 +85,14 @@ jobs:
   output-api-url:
     runs-on: ubuntu-latest
     needs: [build-image-api-calling-wf]
-    if: needs.check-folder-changes.outputs.api_changed == 'True'
+    # if: needs.check-folder-changes.outputs.api_changed == 'True'
     steps:
       - id: output-api-url
         run: echo ${{ needs.build-image-api-calling-wf.outputs.biddingapiurl }}
 
   build-image-web-calling-wf:
-    needs: [build-env, check-folder-changes, output-api-url]
-    if: needs.check-folder-changes.outputs.web_changed == 'True'
+    needs: [build-env, check-folder-changes, build-image-api-calling-wf]
+    # if: needs.check-folder-changes.outputs.web_changed == 'True'
     uses: ./.github/workflows/web.yml
     with:
       apiurl: ${{ needs.build-image-api-calling-wf.outputs.biddingapiurl }}
-
-  # TODO: won't work - need to set env vars in the bicep template immediately when deploying
-  # point-web-to-api:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-env, check-folder-change, build-image-api-calling-wf]
-  #   steps:
-  #     - uses: actions/checkout@v3
-
-  #     - name: 'Az CLI login'
-  #       uses: azure/login@v1
-  #       with:
-  #         client-id: ${{ ENV.CLIENT_ID }}
-  #         tenant-id: ${{ ENV.TENANT_ID }}
-  #         subscription-id: ${{ ENV.SUBSCRIPTION_ID }}
-  
-  #     - name: 'Run az commands'
-  #       run: |
-  #         az account show
-  #         az config set extension.use_dynamic_install=yes_without_prompt
-  #         az containerapp 

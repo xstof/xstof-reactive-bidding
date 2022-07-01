@@ -59,7 +59,8 @@ jobs:
       - name: 'Publish container to container apps'
         run: |
           az account show
-          environmentVarForLocation='{"Name":"ASPNETCORE_ApiBaseUrl","Value": "${{ inputs.apiurl }}"}'
+          environmentVarForAPILocation='{"Name":"ASPNETCORE_ApiBaseUrl","Value": "${{ inputs.apiurl }}"}'
+          echo "environment var for API location: ${{ environmentVarForLocation }}"
           az deployment group create --resource-group ${{ ENV.RG }} \
             --template-file container-app-container.bicep \
             --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
@@ -68,5 +69,5 @@ jobs:
                          registryResourceGroupName='cccontainers' \
                          containerImage='ccacr.azurecr.io/bidding-web:${{ github.sha }}' \
                          targetPort=5000 \
-                         envVars='($environmentVarForLocation)'\
+                         envVars='($environmentVarForAPILocation)'\
                          revisionSuffix=${{ github.sha }}
