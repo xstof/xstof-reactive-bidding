@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import auctionReducer from '../features/auctions/auctionsSlice';
+import configReducer from '../features/config/configSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    auctions: auctionReducer
+    auctions: auctionReducer,
+    config: configReducer
   },
 });
 
