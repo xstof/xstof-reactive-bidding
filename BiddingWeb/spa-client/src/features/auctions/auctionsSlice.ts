@@ -87,13 +87,41 @@ export const fetchAuctions = createAsyncThunk('auctions/fetchAuctions', async ()
     });
 
     const response = await client.getAuctions();
-    return response.data.map(auction => {
-        return {
+    const auctionsWithoutLots = response.data.map(auction => {
+        return <Auction> {
             name: auction.name,
             id: auction.id,
             category: auction.category,
-            lots: <Lot[]>[]};
+            lots: <Lot[]>[
+            ]};
     });
+
+    const auctions = await Promise.all(
+        auctionsWithoutLots.map(async (auction) => {
+            var lotsResponse = await client.getAuctionLots(auction.id);
+            let lots = lotsResponse.data.map(lot => <Lot>{
+                name: lot.name,
+                id: lot.id,
+                price: lot.price
+            });
+            auction.lots = lots;
+            return auction;
+        })
+    );
+
+    // const auctions = await Promise.all(
+    //     auctionsWithoutLots.map(async auctionElement: => {
+    //         let lotsResponse = await client.getAuctionLots(auctionElement.id);
+    //         let lots = lotsResponse.data.map(lot => <Lot>{
+    //             name: lot.name,
+    //             id: lot.id,
+    //             price: lot.price
+    //         });
+    //         auctionElement.lots = lots;
+    //     })
+    // );
+
+   return auctions;
 });
 
 export const auctionsSlice = createSlice({
@@ -106,6 +134,14 @@ export const auctionsSlice = createSlice({
         auctionAdded: (state, action: PayloadAction<Auction>) => {
             state.auctions.push(action.payload);
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchAuctions.fulfilled, (state, action) => {
+            return {
+                ...state,
+                auctions: action.payload
+            };
+        })
     }
 });
 
