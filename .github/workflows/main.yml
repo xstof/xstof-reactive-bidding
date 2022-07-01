@@ -79,7 +79,7 @@ jobs:
 
   build-image-api-calling-wf:
     needs: [build-env, check-folder-changes]
-    if: needs.check-folder-changes.outputs.api_changed == 'True'
+    # if: needs.check-folder-changes.outputs.api_changed == 'True'
     uses: ./.github/workflows/api.yml
 
   output-api-url:
