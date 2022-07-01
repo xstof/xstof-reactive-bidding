@@ -94,8 +94,8 @@ jobs:
     needs: [build-env, check-folder-changes]
     if: needs.check-folder-changes.outputs.web_changed == 'True'
     uses: ./.github/workflows/web.yml
-    # with:
-    #   apiurl: ${{ needs.build-image-api-calling-wf.outputs.biddingapiurl }}
+    with:
+      apiurl: ${{ needs.build-image-api-calling-wf.outputs.biddingapiurl }}
 
   # TODO: won't work - need to set env vars in the bicep template immediately when deploying
   # point-web-to-api:
