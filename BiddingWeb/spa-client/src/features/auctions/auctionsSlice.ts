@@ -79,11 +79,12 @@ const initialState: AuctionsState = {
     ]
 };
 
-export const fetchAuctions = createAsyncThunk('auctions/fetchAuctions', async () => {
+export const fetchAuctions = createAsyncThunk('auctions/fetchAuctions', async (apiUrl:string) => {
 
     // use swagger-generated typescript client, generated in /src/biddingclient/
     const client = new auctionClient({
-        baseUrl: 'https://localhost:7294' // TODO GET THIS FROM CONFIG
+        //baseUrl: 'https://localhost:7294' // TODO GET THIS FROM CONFIG
+        baseUrl: apiUrl
     });
 
     const response = await client.getAuctions();

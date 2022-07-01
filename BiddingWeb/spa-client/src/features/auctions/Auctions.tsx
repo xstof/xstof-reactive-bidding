@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 export function Auctions(){
 
     const auctions = useAppSelector(state => state.auctions);    
+    const config = useAppSelector(state => state.config);
     const status = useAppSelector(state => state.auctions.status);
 
     const dispatch = useAppDispatch();
@@ -19,7 +20,10 @@ export function Auctions(){
 
     useEffect(() => {
         if(status === 'idle'){
-            dispatch(fetchAuctions());
+            let apiUrl = config.apiBaseUrl;
+            if(apiUrl){
+                dispatch(fetchAuctions(apiUrl));
+            }
         }
     }, [dispatch, status]);
 
