@@ -109,18 +109,6 @@ export const fetchAuctions = createAsyncThunk('auctions/fetchAuctions', async ()
         })
     );
 
-    // const auctions = await Promise.all(
-    //     auctionsWithoutLots.map(async auctionElement: => {
-    //         let lotsResponse = await client.getAuctionLots(auctionElement.id);
-    //         let lots = lotsResponse.data.map(lot => <Lot>{
-    //             name: lot.name,
-    //             id: lot.id,
-    //             price: lot.price
-    //         });
-    //         auctionElement.lots = lots;
-    //     })
-    // );
-
    return auctions;
 });
 
