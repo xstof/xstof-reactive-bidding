@@ -25,6 +25,21 @@ function App() {
     }
 }, [dispatch, configStatus]);
 
+  if(configStatus === 'idle' || configStatus === 'loading'){
+    return (
+      <div className="App">
+        <Header></Header>
+        <Container>
+          <Row>
+            <Col>
+              ... loading configuration ...
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <Header></Header>

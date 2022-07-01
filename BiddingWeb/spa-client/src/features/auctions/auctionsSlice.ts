@@ -127,6 +127,7 @@ export const auctionsSlice = createSlice({
         builder.addCase(fetchAuctions.fulfilled, (state, action) => {
             return {
                 ...state,
+                status: 'succeeded',
                 auctions: action.payload
             };
         })
