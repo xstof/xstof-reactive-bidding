@@ -68,5 +68,5 @@ jobs:
                          registryResourceGroupName='cccontainers' \
                          containerImage='ccacr.azurecr.io/bidding-web:${{ github.sha }}' \
                          targetPort=5000 \
-                         envVars='(environmentVarForLocation)'\
+                         envVars='($environmentVarForLocation)'\
                          revisionSuffix=${{ github.sha }}

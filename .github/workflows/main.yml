@@ -91,7 +91,7 @@ jobs:
         run: echo ${{ needs.build-image-api-calling-wf.outputs.biddingapiurl }}
 
   build-image-web-calling-wf:
-    needs: [build-env, check-folder-changes]
+    needs: [build-env, check-folder-changes, output-api-url]
     if: needs.check-folder-changes.outputs.web_changed == 'True'
     uses: ./.github/workflows/web.yml
     with:
