@@ -21,6 +21,9 @@ param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-hellowo
 @description('Specifies the container port.')
 param targetPort int = 80
 
+@description('Specifies the environment vars for the container.  Array of object containing Name and Value props')
+param envVars array = []
+
 @description('Number of CPU cores the container can use. Can be with a maximum of two decimals.')
 param cpuCore string = '0.5'
 
@@ -100,6 +103,10 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
           }
+          env: [for item in envVars: {
+            name: item.name
+            value: item.value
+          }]
         }
       ]
       scale: {
