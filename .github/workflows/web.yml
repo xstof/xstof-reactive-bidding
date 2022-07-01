@@ -60,7 +60,7 @@ jobs:
         run: |
           az account show
           environmentVarForAPILocation='{"Name":"ASPNETCORE_ApiBaseUrl","Value": "${{ inputs.apiurl }}"}'
-          echo "environment var for API location: ${{ environmentVarForAPILocation }}"
+          echo "environment var for API location: $environmentVarForAPILocation"
           az deployment group create --resource-group ${{ ENV.RG }} \
             --template-file container-app-container.bicep \
             --parameters containerAppEnvName='xstof-bidding-dev-containerAppsEnv' \
